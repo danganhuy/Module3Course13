@@ -12,10 +12,11 @@ public class UserDAO implements IUserDAO {
     private String jdbcPassword = "Nf!23456";
 
     private static final String INSERT_USERS_SQL = "INSERT INTO users (name, email, country) VALUES (?, ?, ?);";
-    private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id =?";
-    private static final String SELECT_ALL_USERS = "select * from users";
-    private static final String DELETE_USERS_SQL = "delete from users where id = ?;";
-    private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
+    private static final String SELECT_USER_BY_ID = "SELECT id,name,email,country FROM users WHERE id = ?";
+    private static final String SELECT_ALL_USERS = "SELECT * FROM users";
+    private static final String DELETE_USERS_SQL = "DELETE FROM users WHERE id = ?;";
+    private static final String UPDATE_USERS_SQL = "UPDATE users SET name = ?,email = ?, country = ? WHERE id = ?;";
+    private static final String SEARCH_USER_BY_COUNTRY = "SELECT * FROM users WHERE country LIKE ?;";
 
     public UserDAO() {
     }
@@ -107,6 +108,23 @@ public class UserDAO implements IUserDAO {
             rowUpdated = statement.executeUpdate() > 0;
         }
         return rowUpdated;
+    }
+
+    public List<User> searchUsersByCountry(String country) throws SQLException {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(SEARCH_USER_BY_COUNTRY);) {
+            statement.setString(1, country);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String countryName = rs.getString("country");
+                users.add(new User(id, name, email, countryName));
+            }
+        }
+        return users;
     }
 
     private void printSQLException(SQLException ex) {

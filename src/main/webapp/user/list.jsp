@@ -29,6 +29,51 @@
         #user-table tr:nth-child(odd) {
             background-color: #d7e3ff;
         }
+        .search-container {
+            background-color: white;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -38,6 +83,13 @@
             <a href="/users?action=create">Add New User</a>
         </h2>
     </center>
+
+    <div class="search-container">
+        <form action="/users" method="get">
+            <input type="text" name="country" placeholder="Type country">
+            <button type="submit" name="action" value="search">Search</button>
+        </form>
+    </div>
     <div id="user-data">
         <table id="user-table">
             <caption><h2>List of Users</h2></caption>
